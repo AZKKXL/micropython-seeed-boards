@@ -35,7 +35,6 @@ jobs:
         run: |
           git clone -b v5.5 --recursive https://github.com/espressif/esp-idf.git
           git submodule update --init --recursive
-          source export.sh
 
       - name: Install ESP-IDF
         run: |
