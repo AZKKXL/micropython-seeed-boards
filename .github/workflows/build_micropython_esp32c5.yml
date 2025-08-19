@@ -34,11 +34,13 @@ jobs:
       - name: Clone ESP-IDF
         run: |
           git clone -b v5.5 --recursive https://github.com/espressif/esp-idf.git
+          git submodule update --init --recursive
+          source export.sh
 
       - name: Install ESP-IDF
         run: |
           cd esp-idf
-          ./install.sh esp32c5
+          ./install.sh esp32
           source export.sh
           echo "IDF_PATH=$(pwd)" >> $GITHUB_ENV
           echo "PATH=$PATH:$(pwd)/components/esptool_py/esptool" >> $GITHUB_ENV
