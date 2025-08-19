@@ -40,13 +40,12 @@ jobs:
         run: |
           cd esp-idf
           ./install.sh esp32
-          source export.sh
-          echo "IDF_PATH=$(pwd)" >> $GITHUB_ENV
-          echo "PATH=$PATH:$(pwd)/components/esptool_py/esptool" >> $GITHUB_ENV
 
       - name: Build ESP32-C5 firmware
         run: |
           source esp-idf/export.sh
+          which riscv32-esp-elf-gcc
+          riscv32-esp-elf-gcc --version
           cd lib/micropython
           gh pr checkout 17912
           make -C mpy-cross
