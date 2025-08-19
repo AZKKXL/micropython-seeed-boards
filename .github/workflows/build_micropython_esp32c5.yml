@@ -56,6 +56,8 @@ jobs:
           cd ports/esp32
           make submodules
           make BOARD=SEEED_XIAO_ESP32C5
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
