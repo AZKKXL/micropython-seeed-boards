@@ -1,0 +1,64 @@
+name: Build MicroPython Firmware for Seeed Xiao Esp32c5
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout MicroPython
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc git wget make libncurses-dev flex bison gperf python3-pip
+          sudo apt-get install -y gh
+          python -m pip install --upgrade pip
+          pip install pyelftools
+
+      - name: Clone ESP-IDF
+        run: |
+          git clone -b v5.5 --recursive https://github.com/espressif/esp-idf.git
+
+      - name: Install ESP-IDF
+        run: |
+          cd esp-idf
+          ./install.sh esp32
+          source export.sh
+          echo "IDF_PATH=$(pwd)" >> $GITHUB_ENV
+          echo "PATH=$PATH:$(pwd)/components/esptool_py/esptool" >> $GITHUB_ENV
+
+      - name: Build mpy-cross
+        run: |
+          cd lib/micropython
+          make -C mpy-cross
+
+      - name: Build ESP32-C5 firmware
+        run: |
+          source esp-idf/export.sh
+          cd lib/micropython
+          gh pr checkout 17912
+          cd ports/esp32
+          make submodules
+          make BOARD=SEEED_XIAO_ESP32C5
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: esp32c5-firmware
+          path: ports/esp32/build-SEEED_XIAO_ESP32C5/firmware.bin
