@@ -44,19 +44,15 @@ jobs:
           echo "IDF_PATH=$(pwd)" >> $GITHUB_ENV
           echo "PATH=$PATH:$(pwd)/components/esptool_py/esptool" >> $GITHUB_ENV
 
-      - name: Build mpy-cross
-        run: |
-          cd lib/micropython
-          make -C mpy-cross
-
       - name: Build ESP32-C5 firmware
         run: |
           source esp-idf/export.sh
           cd lib/micropython
           gh pr checkout 17912
+          make -C mpy-cross
           cd ports/esp32
           make submodules
-          make BOARD=ESP32_GENERIC_C2
+          make BOARD=SEEED_XIAO_ESP32C5
         env:
           GH_TOKEN: ${{ github.token }}
 
