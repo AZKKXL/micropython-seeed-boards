@@ -27,6 +27,8 @@ jobs:
           cd ~/esp-idf
           git submodule update --init --recursive
           ./install.sh esp32
+          echo "XXXXXXXX---------xxxxxxx"
+          which riscv32-esp-elf-g++
 
       - name: Build ESP32-C5 firmware
         run: |
@@ -35,7 +37,6 @@ jobs:
           gh pr checkout 17912
           make -C mpy-cross
           cd ports/esp32
-          pwd
           rm -rf build-ESP32_GENERIC
           make BOARD=SEEED_XIAO_ESP32C5
         env:
