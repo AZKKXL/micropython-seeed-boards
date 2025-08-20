@@ -37,7 +37,6 @@ jobs:
           cd ports/esp32
           pwd
           rm -rf build-ESP32_GENERIC
-          make submodules
           make BOARD=SEEED_XIAO_ESP32C5
         env:
           GH_TOKEN: ${{ github.token }}
