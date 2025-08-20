@@ -50,6 +50,8 @@ jobs:
       # Upload Xiao nRF52840 artifacts to Release (only on release event)
       - name: Upload Xiao esp32c5 artifacts to Release
         if: github.event_name == 'release'
+        permissions:
+          contents: write
         run: |
           mv lib/micropython/ports/esp32/build-SEEED_XIAO_ESP32C5/firmware.bin lib/micropython/ports/esp32/build-SEEED_XIAO_ESP32C5/micropython_xiao_esp32c5.bin
           gh release upload ${{ github.event.release.tag_name }} \

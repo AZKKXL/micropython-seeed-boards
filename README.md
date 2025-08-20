@@ -68,6 +68,15 @@ west build ./lib/micropython/ports/zephyr --pristine --board xiao_nrf54l15/nrf54
 west build ./lib/micropython/ports/zephyr --pristine --board xiao_ble -- -DCONF_FILE=./lib/micropython/ports/zephyr/prj_minimal.conf
 ```
 
+#### For Xiao esp32c5
+* For the MicroPython firmware of the Seeed XIAO ESP32C5, a CI (Continuous Integration) automatic compilation workflow has been added. You only need to download the corresponding firmware from the release and use the appropriate flashing method. 
+* Here, the esptool tool is recommended for flashing. It should be noted that when flashing the MicroPython firmware, **the starting address must be specified as 0x2000.**
+```bash
+# e.g. Flashing the Firmware
+esptool.py --chip esp32c5 --port /dev/cu.usbmodem11301 --baud 460800 write_flash -z 0x2000 
+```
+
+
 ### Notes
 - If you encounter issues with undefined Kconfig symbols (e.g., `NET_SOCKETS_POSIX_NAMES`), check the `lib/micropython/ports/zephyr/prj.conf` file and comment out or remove unsupported configurations.
 - Ensure the Zephyr version matches the requirements of the MicroPython port (v4.0 is recommended).
