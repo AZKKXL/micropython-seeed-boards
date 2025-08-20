@@ -35,6 +35,7 @@ jobs:
           gh pr checkout 17912
           make -C mpy-cross
           cd ports/esp32
+          pwd
           make submodules
           make BOARD=SEEED_XIAO_ESP32C5
         env:
