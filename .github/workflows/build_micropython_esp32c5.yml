@@ -21,20 +21,17 @@ jobs:
       - name: Clone ESP-IDF
         run: |
           sudo apt-get update
-          sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0
-          mkdir -p ~/esp
-          cd ~/esp
-          git clone --recursive https://github.com/espressif/esp-idf.git
-          cd ~/esp/esp-idf
-          export IDF_GITHUB_ASSETS="dl.espressif.com/github_assets"
+          sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0 gh
+          cd ~
+          git clone -b v5.5 --recursive https://github.com/espressif/esp-idf.git
+          cd ~/esp-idf
+          git submodule update --init --recursive
           ./install.sh esp32c5
-          echo "XXXXXXXX---------xxxxxxx"
           . ./export.sh
-          which riscv32-esp-elf-g++
 
       - name: Build ESP32-C5 firmware
         run: |
-          . $HOME/esp/esp-idf/export.sh
+          . ~/esp-idf/export.sh
           cd lib/micropython
           gh pr checkout 17912
           make -C mpy-cross
