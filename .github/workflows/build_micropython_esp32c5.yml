@@ -28,6 +28,7 @@ jobs:
           git submodule update --init --recursive
           ./install.sh esp32
           echo "XXXXXXXX---------xxxxxxx"
+          . ./export.sh
           which riscv32-esp-elf-g++
 
       - name: Build ESP32-C5 firmware
